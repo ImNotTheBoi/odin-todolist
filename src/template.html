@@ -6,6 +6,39 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <button class="newProject">New Project</button>
+    <button class="newTodos">New Todos</button>
+    <dialog>
+        <form action="">
+            <div>
+                <label for="bookName">
+                    Book Name:
+                    <input type="text" id="bookName">
+                </label>
+            </div>
+            <div>
+                <label for="author">
+                    Author:
+                    <input type="text" id="author">
+                </label>
+            </div>
+            <div>
+                <label for="numberOfPages">
+                    Number of Pages:
+                    <input type="text" id="numberOfPages">
+                </label>
+            </div>
+            <div>
+                <label for="hasRead">
+                    Has Read:
+                    <input class="dialogCheckbox" type="checkbox" data-val="true" value="true" id="hasRead">
+                </label>
+            </div>
+            <div>
+                <button value="cancel" formmethod="dialog">Close</button>
+                <button id="confirmButton">Confirm</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>

@@ -14,7 +14,6 @@ export default class dueDate {
     }
 
     get remainingTime() {
-        console.log(this.dateAndTime)
         if (this.compareDate === 1) {
             return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " left"
         }
