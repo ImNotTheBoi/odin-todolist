@@ -1,7 +1,11 @@
 import { formatDistance, compareAsc, add } from "date-fns";
-class dueDate {
+export default class dueDate {
     constructor(date, time) {
         [this.date, this.time] = [date, time]
+    }
+
+    compareDate() {
+        return compareAsc(this.dateAndTime, new Date())
     }
 
     get dateAndTime() {
@@ -11,12 +15,9 @@ class dueDate {
 
     get remainingTime() {
         console.log(this.dateAndTime)
-        const compareDate = compareAsc(this.dateAndTime, new Date())
-        if (compareDate === 1) {
+        if (this.compareDate === 1) {
             return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " left"
         }
         return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " ago"
     }
 }
-const newDueDate = new dueDate("2025-04-19", "14:00:00")
-console.log(newDueDate.remainingTime)
