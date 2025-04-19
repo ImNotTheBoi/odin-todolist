@@ -1,3 +1,4 @@
+import Todos from "./todos"
 export default class Project {
     todoList = []
     constructor(projectTitle) {
