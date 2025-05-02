@@ -1,5 +1,3 @@
-import { add } from "date-fns"
-
 export default class Todos {
     constructor(title, description, dueDate, priority, notes, checklist) {
         [this.title, this.description, this.dueDate, this.priority, this.notes, this.checklist] = [title, description, dueDate, priority, notes, checklist]
