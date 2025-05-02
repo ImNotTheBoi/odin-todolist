@@ -6,13 +6,18 @@ export default class Todos {
     }
     
     setProject(project) {
-        console.log(this.project)
         if (this.project) {
-            console.log(this.project.todoList[this.todoIndex])  
-            this.project.deleteTodos((this.project.todoList[this.todoIndex]))
+            this.project.deleteTodos(this.todoIndex)
         }
         this.project = project
         this.todoIndex = project.addTodos(this.todoInfo)
+    }
+
+    editInfo(info, value) {
+        if (!this[info]) {return console.log("property does not exist")}
+        this[info] = value
+        this.project.deleteTodos(this.todoIndex)
+        this.project.addTodos(this.todoInfo)
     }
 
     get todoInfo() {
