@@ -1,4 +1,4 @@
-import { deleteProject, deleteTodos } from "./storageHandler"
+import { saveData, deleteData } from "./storageHandler"
 
 export default class Project {
     todoList = []
@@ -28,9 +28,13 @@ export default class Project {
     }
 
     removeTodos(index) {
-        console.log(index)
         this.todoList.splice(index, 1)
         console.log(this.todoList)
+
+    }
+
+    deleteProject(thisProject) {
+        deleteData(thisProject)
     }
 }
 

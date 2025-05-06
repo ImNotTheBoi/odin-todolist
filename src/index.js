@@ -10,6 +10,8 @@ const newTodo = new Todos("yes", "yes", newDueDate.dateAndTime, "1", "yes", "yes
 const newTodo2 = new Todos("yes", "yes", newDueDate.dateAndTime, "2", "yes", "yes")
 newTodo.setProject(newTodo, newProject)
 newTodo.setProject(newTodo, newProject2)
-newTodo.editInfo("title", "no")
+newTodo.deleteTodo(newTodo)
+new
 console.log(newProject)
 console.log(newProject2)
+console.log(newTodo)
