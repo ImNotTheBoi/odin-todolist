@@ -21,20 +21,13 @@ export default class Project {
     }
 
     addTodos(todo) {
-        console.log(todo)
         this.todoList.unshift(todo)
         this.sortPriority()
         return this.todoList.indexOf(todo)
     }
 
-    removeTodos(index) {
+    removeTodos(index, thisProject) {
         this.todoList.splice(index, 1)
-        console.log(this.todoList)
-
-    }
-
-    deleteProject(thisProject) {
-        deleteData(thisProject)
     }
 }
 

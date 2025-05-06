@@ -3,6 +3,7 @@ let projectList = []
 const storedProjects = localStorage.getItem('projectList')
 
 function loadData() {
+    if (projectList == []) {return}
     projectList = JSON.parse(storedProjects)
     console.log(projectList)
 }
