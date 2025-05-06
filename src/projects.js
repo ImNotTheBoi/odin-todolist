@@ -1,3 +1,5 @@
+import { deleteProject, deleteTodos } from "./storageHandler"
+
 export default class Project {
     todoList = []
     constructor(projectTitle) {
@@ -25,7 +27,7 @@ export default class Project {
         return this.todoList.indexOf(todo)
     }
 
-    deleteTodos(index) {
+    removeTodos(index) {
         console.log(index)
         this.todoList.splice(index, 1)
         console.log(this.todoList)
