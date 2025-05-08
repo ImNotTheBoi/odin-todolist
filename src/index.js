@@ -2,7 +2,7 @@ import "./styles.css";
 import Project from "./projects"
 import Todo from "./todos"
 import dueDate from "./todoDate"
-import { saveData } from "./storageHandler"
+import { saveData, deleteData } from "./storageHandler"
 
 const newProject = new Project("Default")
 const newProject2 = new Project("Project1")
@@ -11,4 +11,5 @@ const newTodo = new Todo("yes", "yes", newDueDate.dateAndTime, "1", "yes", "yes"
 newProject.addTodo(newTodo)
 console.log(newProject)
 console.log(newTodo)
-saveData(newProject)
+
+deleteData(0)

@@ -1,7 +1,8 @@
-import { saveData } from "./storageHandler"
+import { saveData, deleteData } from "./storageHandler"
 
 export default class Project {
     todoList = []
+    indexInList = null
     constructor(projectTitle) {
         [this.projectTitle] = [projectTitle]
     }
@@ -36,6 +37,9 @@ export default class Project {
         saveData(project)
     }
 
+    deleteProject() {
+        deleteData(this.indexInList)      
+    }
 }
 
 
