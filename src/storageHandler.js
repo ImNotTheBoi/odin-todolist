@@ -2,10 +2,6 @@ let projectList = []
 
 const storedProjects = localStorage.getItem('projectList')
 
-function getProjectList() {
-    return projectList
-}
-
 function loadData() {
     if (!JSON.parse(storedProjects)) {return}
     projectList = JSON.parse(storedProjects)
@@ -26,6 +22,12 @@ function saveData(project) {
     localStorage.setItem('projectList', JSON.stringify(projectList))
 }
 
+function changeData(projectIndex, project) {
+    projectList[projectIndex] = project
+    console.log(projectList)
+    localStorage.setItem('projectList', JSON.stringify(projectList))
+}
+
 function deleteData(projectIndex) {
     projectList.splice(projectIndex, 1)
     giveIndex()
@@ -33,4 +35,4 @@ function deleteData(projectIndex) {
 }
 
 loadData()
-export {saveData, deleteData, getProjectList}
+export {saveData, deleteData, changeData}

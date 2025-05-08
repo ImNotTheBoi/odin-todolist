@@ -7,36 +7,61 @@
 </head>
 <body>
     <button class="newProject">New Project</button>
-    <button class="newTodos">New Todos</button>
-    <dialog>
+    <dialog class="projectDialog">
         <form action="">
             <div>
-                <label for="bookName">
-                    Book Name:
-                    <input type="text" id="bookName">
+                <label for="projectName">
+                    Project Name:
+                    <input type="text" id="projectName">
+                </label>
+                <div>
+                    <button value="cancel" formmethod="dialog">Close</button>
+                    <button id="confirmProject">Confirm</button>
+                </div>
+            </div>
+        </form>
+    </dialog>
+    <dialog class="todosDialog">
+        <form action="">
+            <div>
+                <label for="title">
+                    Title:
+                    <input type="text" id="title">
                 </label>
             </div>
             <div>
-                <label for="author">
+                <label for="description">
                     Author:
-                    <input type="text" id="author">
+                    <input type="text" id="description">
                 </label>
             </div>
             <div>
-                <label for="numberOfPages">
+                <label for="dueDate">
                     Number of Pages:
-                    <input type="text" id="numberOfPages">
+                    <input type="datetime-local" id="dueDate">
                 </label>
             </div>
             <div>
-                <label for="hasRead">
+                <label for="priority">
+                    Number of Pages:
+                    <input type="text" id="priority">
+                </label>
+            </div>
+            <div>
+                <label for="notes">
+                    Number of Pages:
+                    <input type="text" id="notes">
+                </label>
+            </div>  
+            <div>
+                <label for="checklist">
                     Has Read:
-                    <input class="dialogCheckbox" type="checkbox" data-val="true" value="true" id="hasRead">
+                    <input class="dialogCheckbox" type="checkbox" data-val="true" value="true" id="checklist">
                 </label>
             </div>
             <div>
                 <button value="cancel" formmethod="dialog">Close</button>
-                <button id="confirmButton">Confirm</button>
+                <button id="confirmTodos">Confirm</button>
             </div>
         </form>
     </dialog>

@@ -1,4 +1,4 @@
-import { saveData, deleteData } from "./storageHandler"
+import { saveData, deleteData} from "./storageHandler"
 
 export default class Project {
     todoList = []
