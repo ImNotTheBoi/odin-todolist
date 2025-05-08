@@ -1,4 +1,4 @@
-import { saveData, deleteData } from "./storageHandler"
+import { saveData } from "./storageHandler"
 
 export default class Project {
     todoList = []
@@ -20,15 +20,22 @@ export default class Project {
         this.setPriorityColor()
     }
 
-    addTodos(todo) {
+    addTodo(todo) {
         this.todoList.unshift(todo)
         this.sortPriority()
-        return this.todoList.indexOf(todo)
     }
-
-    removeTodos(index, thisProject) {
+    
+    removeTodo(todo) {
+        index = this.todoList.indexOf(todo)
         this.todoList.splice(index, 1)
     }
+
+    moveTodo(todo, project) {
+        this.removeTodo(todo)
+        project.addTodo(todo)
+        saveData(project)
+    }
+
 }
 
 

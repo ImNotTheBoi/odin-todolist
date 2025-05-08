@@ -9,7 +9,8 @@ function loadData() {
 }
 
 function saveData(project) {
-    projectList.shift(project)
+    projectList.push(project)
+    console.log(projectList)
     localStorage.setItem('projectList', JSON.stringify(projectList))
 }
 
