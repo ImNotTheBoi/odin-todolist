@@ -7,16 +7,4 @@ export default class Todo {
         if (!this[info]) {return console.log("property does not exist")}
         this[info] = value
     }
-
-    get todoInfo() {
-        return {
-            title: this.title, 
-            description: this.description, 
-            dueDate: this.dueDate, 
-            priority: this.priority,
-            notes: this.notes, 
-            checklist: this.checklist,
-            project: this.project
-        }
-    }
 }

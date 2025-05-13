@@ -2,12 +2,7 @@ import "./styles.css";
 import Project from "./projects"
 import Todo from "./todos"
 import dueDate from "./todoDate"
-import { saveData, deleteData, changeData } from "./storageHandler"
-
-// const newProject = new Project("Default")
-// const newDueDate = new dueDate("2025-04-14", "14:00:00")
-// const newTodo = new Todo("yes", "yes", newDueDate.dateAndTime, "1", "yes", "yes")
-// newProject.addTodo(newTodo)
+import { saveData, deleteData, changeData, loadData, projectList } from "./storageHandler"
 
 const projectDialog = document.querySelector(".projectDialog")
 const newProjectButton = document.querySelector(".newProject")
@@ -25,11 +20,70 @@ const checklistInput = document.querySelector("#checklist")
 
 const body = document.querySelector("body")
 
-function createTodo(title, description, dueDate, priority, notes, checklist) {
-    const newTodo = new Todo(title, description, dueDate, priority, notes, checklist)
-    currentProject.addTodo(newTodo)
+let currentProject = ""
+function appendProject(project) {
+    // .Todo Button
+    const newTodoButton = document.createElement("button")
+    newTodoButton.textContent = "New Todo"
+    newProjectButton.classList.add = "newTodos"
+    newTodoButton.addEventListener("click", () => {
+        currentProject = project
+        console.log(project)
+        todosDialog.showModal()
+    })
+    body.appendChild(newTodoButton)
+    
+    // Append Div
+    const newDiv = document.createElement("div")
+    newDiv.textContent = project.projectTitle
+    body.appendChild(newDiv)
+}
+
+function appendTodo(todo) {
+    console.log(todo)
+    if (!todo) {return}
+    function checkIfNil(todoEle) {
+        if (!todoEle && todoEle !== false) {return ""}
+        return todoEle
+    }
+    const newDiv = document.createElement("div")
+    newDiv.textContent = `${checkIfNil(todo.title)}, ${checkIfNil(todo.description)}, ${checkIfNil(todo.dueDate)}, ${checkIfNil(todo.priority)}, ${checkIfNil(todo.notes)}, ${checkIfNil(todo.checklist)},`
+    body.appendChild(newDiv)
+}
+
+function createProject() {
+    const newProject = new Project(projectName.value)
+    appendProject(newProject)
+    saveData(newProject)
+    console.log(newProject)
+}
+
+function createTodo() {
+    const newTodo = new Todo(
+        titleInput.value,
+        descriptionInput.value,
+        dueDateInput.value,
+        priorityInput.value,
+        notesInput.value,
+        checklistInput.value
+    )
+    currentProject.addTodo(newTodo.todoInfo)
+    appendTodo(newTodo)
     changeData(currentProject.indexInList, currentProject)
     console.log(currentProject)
+}
+
+function appendSave(projectList) {
+    console.log(projectList)
+    if (projectList == []) {return}
+    for (const project of projectList) {
+        Object.setPrototypeOf(project, Object.getPrototypeOf(new Project()))
+        appendProject(project)
+        for (const todo of project.todoList) {
+            Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
+            appendTodo(todo)
+        }
+    }
 }
 
 newProjectButton.addEventListener("click", () => {
@@ -38,30 +92,15 @@ newProjectButton.addEventListener("click", () => {
 
 confirmProject.addEventListener("click", (event) => {
     event.preventDefault()
-    const newProject = new Project(projectName.value)
-    const newTodoButton = document.createElement("button")
-    newTodoButton.textContent = "New Todo"
-    newProjectButton.classList.add = "newTodos"
-    newTodoButton.addEventListener("click", () => {
-        currentProject = newProject
-        todosDialog.showModal()
-    })
-    body.appendChild(newTodoButton)
-    saveData(newProject)
-    console.log(newProject)
+    createProject()
     projectDialog.close()
 })
 
-let currentProject = ""
 confirmTodos.addEventListener("click", (event) => {
     event.preventDefault()
-    createTodo(
-        titleInput.value,
-        descriptionInput.value,
-        dueDateInput.value,
-        priorityInput.value,
-        notesInput.value,
-        checklistInput.value
-    )
+    createTodo()
     todosDialog.close()
 })
+
+loadData()
+appendSave(projectList)
