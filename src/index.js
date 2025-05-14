@@ -21,11 +21,12 @@ const checklistInput = document.querySelector("#checklist")
 const body = document.querySelector("body")
 
 let currentProject = ""
+let currentTodo = ""
 function appendProject(project) {
     // .Todo Button
     const newTodoButton = document.createElement("button")
     newTodoButton.textContent = "New Todo"
-    newProjectButton.classList.add = "newTodos"
+    newProjectButton.classList.add = "newTodo"
     newTodoButton.addEventListener("click", () => {
         currentProject = project
         console.log(project)
@@ -43,12 +44,28 @@ function appendTodo(todo) {
     console.log(todo)
     if (!todo) {return}
     function checkIfNil(todoEle) {
-        if (!todoEle && todoEle !== false) {return ""}
+        if (!todoEle && todoEle !== false) {return}
         return todoEle
     }
     const newDiv = document.createElement("div")
     newDiv.textContent = `${checkIfNil(todo.title)}, ${checkIfNil(todo.description)}, ${checkIfNil(todo.dueDate)}, ${checkIfNil(todo.priority)}, ${checkIfNil(todo.notes)}, ${checkIfNil(todo.checklist)},`
     body.appendChild(newDiv)
+
+    const editTodoButton = document.createElement("button")
+    editTodoButton.textContent = "Edit Todo"
+    editTodoButton.classList.add = "editTodo"
+    editTodoButton.addEventListener("click", () => {
+        currentTodo = todo
+        console.log(currentTodo)
+        titleInput.value = checkIfNil(todo.title)
+        descriptionInput.value = checkIfNil(todo.description)
+        dueDateInput.value = checkIfNil(todo.dueDate)
+        priorityInput.value = checkIfNil(todo.priority)
+        notesInput.value = checkIfNil(todo.notes)
+        checklistInput.value = checkIfNil(todo.checklist)
+        todosDialog.showModal()
+    })
+    body.appendChild(editTodoButton)
 }
 
 function createProject() {
@@ -67,10 +84,31 @@ function createTodo() {
         notesInput.value,
         checklistInput.value
     )
-    currentProject.addTodo(newTodo.todoInfo)
-    appendTodo(newTodo)
-    changeData(currentProject.indexInList, currentProject)
-    console.log(currentProject)
+    if (currentProject) {
+        currentProject.addTodo(newTodo)
+        appendTodo(newTodo)
+        changeData(currentProject)
+        console.log(currentProject)
+    }
+    else if (currentTodo) {
+        editTodo(newTodo)
+    }
+}
+
+function editTodo(todo) {
+    const project = projectList[currentTodo.indexInList]
+    console.log(project)
+    project.editTodo(todo, currentTodo.indexInList)
+    console.log(project)
+    changeData(project)
+    loadProject(project)
+}
+
+function loadProject(project) {
+    for (const todo of project.todoList) {
+        Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
+        appendTodo(todo)
+    }
 }
 
 function appendSave(projectList) {
@@ -79,10 +117,7 @@ function appendSave(projectList) {
     for (const project of projectList) {
         Object.setPrototypeOf(project, Object.getPrototypeOf(new Project()))
         appendProject(project)
-        for (const todo of project.todoList) {
-            Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
-            appendTodo(todo)
-        }
+        loadProject(project)
     }
 }
 
@@ -99,8 +134,9 @@ confirmProject.addEventListener("click", (event) => {
 confirmTodos.addEventListener("click", (event) => {
     event.preventDefault()
     createTodo()
+    currentProject = ""
     todosDialog.close()
 })
-
+    
 loadData()
 appendSave(projectList)

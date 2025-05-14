@@ -6,12 +6,15 @@ function loadData() {
     if (!JSON.parse(storedProjects)) {return}
     projectList = JSON.parse(storedProjects)
     return projectList
-    console.log(projectList)
 }
 
 function giveIndex() {
     for (let i = 0; i < projectList.length; i++) {
         projectList[i].indexInList = i
+        for (let v = 0; v < projectList[i].todoList.length; v++) {
+            projectList[i].todoList.projectIndex = i
+            console.log(v)
+        }
     }
 }
 
@@ -23,7 +26,8 @@ function saveData(project) {
     localStorage.setItem('projectList', JSON.stringify(projectList))
 }
 
-function changeData(projectIndex, project) {
+function changeData(project) {
+    const projectIndex = project.indexInList
     projectList[projectIndex] = project
     console.log(projectList)
     localStorage.setItem('projectList', JSON.stringify(projectList))
