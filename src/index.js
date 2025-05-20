@@ -2,7 +2,7 @@ import "./styles.css";
 import Project from "./projects"
 import Todo from "./todos"
 import dueDate from "./todoDate"
-import { saveData, deleteData, changeData, loadData, projectList } from "./storageHandler"
+import { saveData, deleteData, changeData, loadData, getProjectList } from "./storageHandler"
 
 const projectDialog = document.querySelector(".projectDialog")
 const newProjectButton = document.querySelector(".newProject")
@@ -22,41 +22,51 @@ const body = document.querySelector("body")
 
 let currentProject = ""
 let currentTodo = ""
+
 function appendProject(project) {
-    // .Todo Button
+    //* Project Div
+    console.log(project)
+    const projectDiv = document.createElement("div")
+    projectDiv.textContent = project.projectTitle
+    projectDiv.classList.add("project")
+    project.projectDiv = projectDiv
+
+    //* Todo Button
     const newTodoButton = document.createElement("button")
     newTodoButton.textContent = "New Todo"
     newProjectButton.classList.add = "newTodo"
     newTodoButton.addEventListener("click", () => {
         currentProject = project
-        console.log(project)
         todosDialog.showModal()
     })
-    body.appendChild(newTodoButton)
     
-    // Append Div
-    const newDiv = document.createElement("div")
-    newDiv.textContent = project.projectTitle
-    body.appendChild(newDiv)
+    body.appendChild(projectDiv)
+    projectDiv.appendChild(newTodoButton)
 }
 
 function appendTodo(todo) {
-    console.log(todo)
     if (!todo) {return}
     function checkIfNil(todoEle) {
         if (!todoEle && todoEle !== false) {return}
         return todoEle
     }
+
+    //* Todo Container
+    const todoDiv = document.createElement("div")
+    todoDiv.classList.add = "todo"
+    todo.todoDiv = todoDiv
+
+    //* Todo Div
     const newDiv = document.createElement("div")
     newDiv.textContent = `${checkIfNil(todo.title)}, ${checkIfNil(todo.description)}, ${checkIfNil(todo.dueDate)}, ${checkIfNil(todo.priority)}, ${checkIfNil(todo.notes)}, ${checkIfNil(todo.checklist)},`
     body.appendChild(newDiv)
 
+    //* Edit Button
     const editTodoButton = document.createElement("button")
     editTodoButton.textContent = "Edit Todo"
     editTodoButton.classList.add = "editTodo"
     editTodoButton.addEventListener("click", () => {
         currentTodo = todo
-        console.log(currentTodo)
         titleInput.value = checkIfNil(todo.title)
         descriptionInput.value = checkIfNil(todo.description)
         dueDateInput.value = checkIfNil(todo.dueDate)
@@ -65,14 +75,18 @@ function appendTodo(todo) {
         checklistInput.value = checkIfNil(todo.checklist)
         todosDialog.showModal()
     })
-    body.appendChild(editTodoButton)
+
+    console.log(todo)
+    const projectDiv = getProjectList()[todo.projectIndex].projectDiv
+    projectDiv.appendChild(todoDiv)
+    todoDiv.appendChild(newDiv)
+    todoDiv.appendChild(editTodoButton)
 }
 
 function createProject() {
     const newProject = new Project(projectName.value)
-    appendProject(newProject)
     saveData(newProject)
-    console.log(newProject)
+    appendProject(newProject)
 }
 
 function createTodo() {
@@ -84,40 +98,41 @@ function createTodo() {
         notesInput.value,
         checklistInput.value
     )
+    //* = Create Todo
     if (currentProject) {
         currentProject.addTodo(newTodo)
-        appendTodo(newTodo)
         changeData(currentProject)
-        console.log(currentProject)
+        currentProject = ""
     }
+    //* = Edit Todo
     else if (currentTodo) {
-        editTodo(newTodo)
+        const project = getProjectList()[currentTodo.projectIndex]
+        project.editTodo(newTodo, currentTodo.indexInList)
+        changeData(currentProject)
+        currentTodo = ""
     }
+    //* Saves Todo
+    appendSave(getProjectList())
 }
 
-function editTodo(todo) {
-    const project = projectList[currentTodo.indexInList]
-    console.log(project)
-    project.editTodo(todo, currentTodo.indexInList)
-    console.log(project)
-    changeData(project)
-    loadProject(project)
-}
-
-function loadProject(project) {
-    for (const todo of project.todoList) {
-        Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
-        appendTodo(todo)
-    }
+function deleteDivs() {
+    const projectDivs = document.querySelectorAll(".project")
+    projectDivs.forEach(project => {
+        project.remove()
+    });
 }
 
 function appendSave(projectList) {
     console.log(projectList)
+    deleteDivs()
     if (projectList == []) {return}
     for (const project of projectList) {
         Object.setPrototypeOf(project, Object.getPrototypeOf(new Project()))
         appendProject(project)
-        loadProject(project)
+        for (const todo of project.todoList) {
+            Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
+            appendTodo(todo)
+        }
     }
 }
 
@@ -134,9 +149,8 @@ confirmProject.addEventListener("click", (event) => {
 confirmTodos.addEventListener("click", (event) => {
     event.preventDefault()
     createTodo()
-    currentProject = ""
     todosDialog.close()
 })
-    
+
 loadData()
-appendSave(projectList)
+appendSave(getProjectList())

@@ -18,7 +18,6 @@ export default class Project {
 
     giveIndex() {
         for (let i = 0; i < this.todoList.length; i++) {
-            console.log(this.todoList[i])
             this.todoList[i].indexInList = i
         }
     }
@@ -41,6 +40,7 @@ export default class Project {
 
     editTodo(todo, index) {
         this.todoList[index] = todo
+        this.sortPriority()
     }
 
     moveTodo(todo, project) {
