@@ -40,7 +40,17 @@ function appendProject(project) {
         todosDialog.showModal()
     })
     
+    const editProjectButton = document.createElement("button")
+    editProjectButton.textContent = "Edit Project"
+    editProjectButton.classList.add = "editProject"
+    editProjectButton.addEventListener("click", () => {
+        currentProject = project
+        projectName.value = project.projectTitle
+        projectDialog.showModal()
+    })
+
     body.appendChild(projectDiv)
+    projectDiv.appendChild(editProjectButton)
     projectDiv.appendChild(newTodoButton)
 }
 
@@ -84,9 +94,16 @@ function appendTodo(todo) {
 }
 
 function createProject() {
-    const newProject = new Project(projectName.value)
-    saveData(newProject)
-    appendProject(newProject)
+    if (currentProject) {
+        const newProject = getProjectList()[currentProject.indexInList].projectTitle = projectName.value
+        changeData(newProject)
+        currentProject = ""
+    }
+    else {
+        const newProject = new Project(projectName.value)
+        saveData(newProject)
+    }
+    appendSave(getProjectList())
 }
 
 function createTodo() {
@@ -136,6 +153,16 @@ function appendSave(projectList) {
     }
 }
 
+function clearDialogs() {
+    projectName.value = ""
+    titleInput.value = ""
+    descriptionInput.value = ""
+    dueDateInput.value = ""
+    priorityInput.value = ""
+    notesInput.value = ""
+    checklistInput.value = ""
+}
+
 newProjectButton.addEventListener("click", () => {
     projectDialog.showModal()
 })
@@ -143,12 +170,14 @@ newProjectButton.addEventListener("click", () => {
 confirmProject.addEventListener("click", (event) => {
     event.preventDefault()
     createProject()
+    clearDialogs()
     projectDialog.close()
 })
 
 confirmTodos.addEventListener("click", (event) => {
     event.preventDefault()
     createTodo()
+    clearDialogs()
     todosDialog.close()
 })
 
