@@ -40,6 +40,7 @@ function appendProject(project) {
         todosDialog.showModal()
     })
     
+    //* Edit Button
     const editProjectButton = document.createElement("button")
     editProjectButton.textContent = "Edit Project"
     editProjectButton.classList.add = "editProject"
@@ -49,8 +50,18 @@ function appendProject(project) {
         projectDialog.showModal()
     })
 
+    //* Delete Button
+    const deleteProjectButton = document.createElement("button")
+    deleteProjectButton.textContent = "Delete Project"
+    deleteProjectButton.classList.add = "deleteProject"
+    deleteProjectButton.addEventListener("click", () => {
+        currentProject = project
+        deleteProject()
+    })
+
     body.appendChild(projectDiv)
     projectDiv.appendChild(editProjectButton)
+    projectDiv.appendChild(deleteProjectButton)
     projectDiv.appendChild(newTodoButton)
 }
 
@@ -94,16 +105,24 @@ function appendTodo(todo) {
 }
 
 function createProject() {
+    //* Edits Project
     if (currentProject) {
         const newProject = getProjectList()[currentProject.indexInList].projectTitle = projectName.value
         changeData(newProject)
         currentProject = ""
     }
+    //* Creates Project
     else {
         const newProject = new Project(projectName.value)
         saveData(newProject)
     }
     appendSave(getProjectList())
+}
+
+function deleteProject() {
+    deleteData(currentProject.indexInList)
+    appendSave(getProjectList())
+    currentProject = ""
 }
 
 function createTodo() {
@@ -130,6 +149,10 @@ function createTodo() {
     }
     //* Saves Todo
     appendSave(getProjectList())
+}
+
+function moveTodo() {
+    
 }
 
 function deleteDivs() {
