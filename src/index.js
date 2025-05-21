@@ -97,11 +97,21 @@ function appendTodo(todo) {
         todosDialog.showModal()
     })
 
+    //* Delete Button
+    const deleteTodoButton = document.createElement("button")
+    deleteTodoButton.textContent = "Delete Todo"
+    deleteTodoButton.classList.add = "deleteTodo"
+    deleteTodoButton.addEventListener("click", () => {
+        currentTodo = todo
+        deleteTodo()
+    })
+
     console.log(todo)
     const projectDiv = getProjectList()[todo.projectIndex].projectDiv
     projectDiv.appendChild(todoDiv)
     todoDiv.appendChild(newDiv)
     todoDiv.appendChild(editTodoButton)
+    todoDiv.appendChild(deleteTodoButton)
 }
 
 function createProject() {
@@ -151,7 +161,12 @@ function createTodo() {
     appendSave(getProjectList())
 }
 
-function moveTodo() {
+function deleteTodo() {
+    const project = getProjectList()[currentTodo.projectIndex]
+    project.removeTodo(currentTodo.indexInList)
+    changeData(project)
+    currentTodo = ""
+    appendSave(getProjectList())
     
 }
 

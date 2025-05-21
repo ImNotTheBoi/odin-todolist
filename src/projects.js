@@ -28,14 +28,14 @@ export default class Project {
         this.setPriorityColor()
     }
 
-    addTodo(todo, index) {
+    addTodo(todo) {
         this.todoList.unshift(todo)
         this.sortPriority()
     }
     
-    removeTodo(todo) {
-        index = this.todoList.indexOf(todo)
+    removeTodo(index) {
         this.todoList.splice(index, 1)
+        this.sortPriority()
     }
 
     editTodo(todo, index) {
