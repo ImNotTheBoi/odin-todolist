@@ -14,6 +14,7 @@ const confirmTodos = document.querySelector("#confirmTodos")
 const titleInput = document.querySelector("#title")
 const descriptionInput = document.querySelector("#description")
 const dueDateInput = document.querySelector("#dueDate")
+const timeInput = document.querySelector("#time")
 const priorityInput = document.querySelector("#priority")
 const notesInput = document.querySelector("#notes")
 const checklistInput = document.querySelector("#checklist")
@@ -79,7 +80,7 @@ function appendTodo(todo) {
 
     //* Todo Div
     const newDiv = document.createElement("div")
-    newDiv.textContent = `${checkIfNil(todo.title)}, ${checkIfNil(todo.description)}, ${checkIfNil(todo.dueDate)}, ${checkIfNil(todo.priority)}, ${checkIfNil(todo.notes)}, ${checkIfNil(todo.checklist)},`
+    newDiv.textContent = `${checkIfNil(todo.title)}, ${checkIfNil(todo.description)}, ${checkIfNil(todo.dueDate.dateStatus)}, ${checkIfNil(todo.priority)}, ${checkIfNil(todo.notes)}, ${checkIfNil(todo.checklist)},`
     body.appendChild(newDiv)
 
     //* Edit Button
@@ -90,7 +91,8 @@ function appendTodo(todo) {
         currentTodo = todo
         titleInput.value = checkIfNil(todo.title)
         descriptionInput.value = checkIfNil(todo.description)
-        dueDateInput.value = checkIfNil(todo.dueDate)
+        dueDateInput.value = checkIfNil(todo.dueDate.date)
+        timeInput.value = checkIfNil(todo.dueDate.time)
         priorityInput.value = checkIfNil(todo.priority)
         notesInput.value = checkIfNil(todo.notes)
         checklistInput.value = checkIfNil(todo.checklist)
@@ -139,7 +141,7 @@ function createTodo() {
     const newTodo = new Todo(
         titleInput.value,
         descriptionInput.value,
-        dueDateInput.value,
+        new dueDate(dueDateInput.value, timeInput.value),
         priorityInput.value,
         notesInput.value,
         checklistInput.value
@@ -186,6 +188,7 @@ function appendSave(projectList) {
         appendProject(project)
         for (const todo of project.todoList) {
             Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
+            Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
             appendTodo(todo)
         }
     }

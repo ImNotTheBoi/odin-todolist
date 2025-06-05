@@ -1,4 +1,4 @@
-import { formatDistance, compareAsc, add } from "date-fns";
+import { formatDistance, compareAsc } from "date-fns";
 export default class dueDate {
     constructor(date, time) {
         [this.date, this.time] = [date, time]
@@ -8,15 +8,29 @@ export default class dueDate {
         return compareAsc(this.dateAndTime, new Date())
     }
 
-    get dateAndTime() {
-        const timeArray = this.time.split(":")
-        return add(new Date(this.date), {hours: timeArray[0], minutes: timeArray[1], seconds: timeArray[2]})
+    compareDays() {
+        const daysLeft = (new Date(this.date).getDay()) - (new Date().getDay())
+        return daysLeft
     }
 
-    get remainingTime() {
-        if (this.compareDate === 1) {
+    get dateAndTime() {
+        if (!this.time) {return new Date(this.date)}
+        const timeArray = (this.time.split(":")).map(x => {return Number(x)})
+        const dateArray = (this.date.split("-")).map(x => {return Number(x)})
+        return new Date(dateArray[0], (dateArray[1] - 1), dateArray[2], timeArray[0], timeArray[1])
+    }
+
+    get dateStatus() {
+        console.log(this.compareDate())
+        if (this.compareDate() === -1 && this.time) {
+            return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " ago"
+        }
+        if (this.compareDays() === 0) {
+            if (this.time) {return "Today, " + this.time}
+            else {return "Today"}
+        }
+        if (this.compareDate() === 1) {
             return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " left"
         }
-        return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " ago"
     }
 }
