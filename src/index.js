@@ -4,6 +4,10 @@ import Todo from "./todos"
 import dueDate from "./todoDate"
 import { saveData, deleteData, changeData, loadData, getProjectList } from "./storageHandler"
 
+const todayButton = document.querySelector(".today")
+const upcomingButton = document.querySelector(".upcoming")
+const inboxButton = document.querySelector(".inbox")
+
 const projectDialog = document.querySelector(".projectDialog")
 const newProjectButton = document.querySelector(".newProject")
 const projectName = document.querySelector("#projectName")
@@ -35,7 +39,7 @@ function appendProject(project) {
     //* Todo Button
     const newTodoButton = document.createElement("button")
     newTodoButton.textContent = "New Todo"
-    newProjectButton.classList.add = "newTodo"
+    newProjectButton.classList.add("newTodo")
     newTodoButton.addEventListener("click", () => {
         currentProject = project
         todosDialog.showModal()
@@ -44,7 +48,7 @@ function appendProject(project) {
     //* Edit Button
     const editProjectButton = document.createElement("button")
     editProjectButton.textContent = "Edit Project"
-    editProjectButton.classList.add = "editProject"
+    editProjectButton.classList.add("editProject")
     editProjectButton.addEventListener("click", () => {
         currentProject = project
         projectName.value = project.projectTitle
@@ -54,7 +58,7 @@ function appendProject(project) {
     //* Delete Button
     const deleteProjectButton = document.createElement("button")
     deleteProjectButton.textContent = "Delete Project"
-    deleteProjectButton.classList.add = "deleteProject"
+    deleteProjectButton.classList.add("deleteProject")
     deleteProjectButton.addEventListener("click", () => {
         currentProject = project
         deleteProject()
@@ -67,15 +71,15 @@ function appendProject(project) {
 }
 
 function appendTodo(todo) {
-    if (!todo) {return}
     function checkIfNil(todoEle) {
         if (!todoEle && todoEle !== false) {return}
         return todoEle
     }
+    if (!todo) {return}
 
     //* Todo Container
     const todoDiv = document.createElement("div")
-    todoDiv.classList.add = "todo"
+    todoDiv.classList.add("todo")
     todo.todoDiv = todoDiv
 
     //* Todo Div
@@ -86,7 +90,7 @@ function appendTodo(todo) {
     //* Edit Button
     const editTodoButton = document.createElement("button")
     editTodoButton.textContent = "Edit Todo"
-    editTodoButton.classList.add = "editTodo"
+    editTodoButton.classList.add("editTodo")
     editTodoButton.addEventListener("click", () => {
         currentTodo = todo
         titleInput.value = checkIfNil(todo.title)
@@ -102,7 +106,7 @@ function appendTodo(todo) {
     //* Delete Button
     const deleteTodoButton = document.createElement("button")
     deleteTodoButton.textContent = "Delete Todo"
-    deleteTodoButton.classList.add = "deleteTodo"
+    deleteTodoButton.classList.add("deleteTodo")
     deleteTodoButton.addEventListener("click", () => {
         currentTodo = todo
         deleteTodo()
@@ -127,13 +131,17 @@ function createProject() {
     else {
         const newProject = new Project(projectName.value)
         saveData(newProject)
+        currentTab = newProject
+        loadProjectButtons()
     }
-    appendSave(getProjectList())
+    loadTab()
 }
 
 function deleteProject() {
     deleteData(currentProject.indexInList)
-    appendSave(getProjectList())
+    currentTab = "Inbox"
+    loadTab()
+    loadProjectButtons()
     currentProject = ""
 }
 
@@ -160,7 +168,7 @@ function createTodo() {
         currentTodo = ""
     }
     //* Saves Todo
-    appendSave(getProjectList())
+    loadTab()
 }
 
 function deleteTodo() {
@@ -168,8 +176,7 @@ function deleteTodo() {
     project.removeTodo(currentTodo.indexInList)
     changeData(project)
     currentTodo = ""
-    appendSave(getProjectList())
-    
+    loadTab()
 }
 
 function deleteDivs() {
@@ -179,18 +186,100 @@ function deleteDivs() {
     });
 }
 
-function appendSave(projectList) {
-    console.log(projectList)
+function deleteProjectButtons() {
+    const projectButtons = document.querySelectorAll(".projectButton")
+    projectButtons.forEach(project => {
+        project.remove()
+    });
+}
+
+function loadProject(project) {
+    Object.setPrototypeOf(project, Object.getPrototypeOf(new Project()))
+    appendProject(project)
+}
+
+function loadTodo(todo) {
+    Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
+    Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
+    appendTodo(todo)
+}
+
+let currentTab = "Inbox"
+function loadTab() {
     deleteDivs()
-    if (projectList == []) {return}
-    for (const project of projectList) {
-        Object.setPrototypeOf(project, Object.getPrototypeOf(new Project()))
-        appendProject(project)
+    if (currentTab === "Inbox") {loadInbox()}
+    else if (currentTab === "Today") {loadToday()}
+    else if (currentTab === "Upcoming") {loadUpcoming()}
+    else {loadProjectTab(currentTab)}
+}
+
+function loadToday() {
+    if (getProjectList() == []) {return}
+    for (const project of getProjectList()) {
+        let projectAppended = false
+        for (const todo of project.todoList) {
+            if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("Today")) {
+                if (!projectAppended) {
+                    projectAppended = true
+                    loadProject(project)
+                    loadTodo(todo)
+                }
+                else {loadTodo(todo)}
+            }
+        }
+    }
+}
+
+function loadUpcoming() {
+    if (getProjectList() == []) {return}
+    for (const project of getProjectList()) {
+        let projectAppended = false
+        for (const todo of project.todoList) {
+            if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("left")) {
+                if (!projectAppended) {
+                    projectAppended = true
+                    loadProject(project)
+                    loadTodo(todo)
+                }
+                else {loadTodo(todo)}
+            }
+        }
+    }
+}
+
+function loadInbox() {
+    if (getProjectList() == []) {return}
+    for (const project of getProjectList()) {
+        loadProject(project)
         for (const todo of project.todoList) {
             Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
             Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
-            appendTodo(todo)
+            loadTodo(todo)
         }
+    }
+}
+
+function loadProjectTab(project) {
+    loadProject(project)
+    for (const todo of project.todoList) {
+        Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
+        Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
+        loadTodo(todo)
+    }
+}
+function loadProjectButtons() {
+    deleteProjectButtons()
+    if (getProjectList() == []) {return}
+    for (const project of getProjectList()) {
+        loadProject(project)
+        const projectButton = document.createElement("button")
+        projectButton.classList.add("projectButton")
+        projectButton.textContent = project.projectTitle
+        projectButton.addEventListener("click", (event) => {
+            currentTab = project
+            loadTab()
+        })
+        body.appendChild(projectButton)
     }
 }
 
@@ -199,10 +288,26 @@ function clearDialogs() {
     titleInput.value = ""
     descriptionInput.value = ""
     dueDateInput.value = ""
+    timeInput.value = ""
     priorityInput.value = ""
     notesInput.value = ""
     checklistInput.value = ""
 }
+
+todayButton.addEventListener("click", () => {
+    currentTab = "Today"
+    loadTab()
+})
+
+upcomingButton.addEventListener("click", () => {
+    currentTab = "Upcoming"
+    loadTab()
+})
+
+inboxButton.addEventListener("click", () => {
+    currentTab = "Inbox"
+    loadTab()
+})
 
 newProjectButton.addEventListener("click", () => {
     projectDialog.showModal()
@@ -223,4 +328,5 @@ confirmTodos.addEventListener("click", (event) => {
 })
 
 loadData()
-appendSave(getProjectList())
+loadProjectButtons()
+loadTab()

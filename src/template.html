@@ -6,12 +6,14 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="today"></div>
+    <button class="inbox">Inbox</button>
+    <button class="today">Today</button>
+    <button class="upcoming">Upcoming</button>
     <button class="newProject">New Project</button>
     <dialog class="projectDialog">
         <form action="">
             <div>
-                <label for="projectName">
+                <label for="projectName" aria-required="true">
                     Project Name:
                     <input type="text" id="projectName">
                 </label>
@@ -25,7 +27,7 @@
     <dialog class="todosDialog">
         <form action="">
             <div>
-                <label for="title">
+                <label for="title" aria-required="true">
                     Title:
                     <input type="text" id="title">
                 </label>
