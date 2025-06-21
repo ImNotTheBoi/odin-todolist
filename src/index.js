@@ -10,10 +10,10 @@ const inboxButton = document.querySelector(".inbox")
 
 const projectDialog = document.querySelector(".projectDialog")
 const newProjectButton = document.querySelector(".newProject")
-const projectName = document.querySelector("#projectName")
+const projectNameInput = document.querySelector("#projectName")
 const confirmProject = document.querySelector("#confirmProject")
 const todosDialog = document.querySelector(".todosDialog")
-const confirmTodos = document.querySelector("#confirmTodos")
+const confirmTodo = document.querySelector("#confirmTodo")
 
 const titleInput = document.querySelector("#title")
 const descriptionInput = document.querySelector("#description")
@@ -22,11 +22,17 @@ const timeInput = document.querySelector("#time")
 const priorityInput = document.querySelector("#priority")
 const notesInput = document.querySelector("#notes")
 const checklistInput = document.querySelector("#checklist")
+const inputs = [projectNameInput, titleInput, descriptionInput, dueDateInput, timeInput, priorityInput, notesInput, checklistInput]
 
 const body = document.querySelector("body")
 
 let currentProject = ""
 let currentTodo = ""
+
+function checkIfNil(x) {
+    if (!x && x !== false) {return ""}
+    return x
+}
 
 function appendProject(project) {
     //* Project Div
@@ -41,7 +47,9 @@ function appendProject(project) {
     newTodoButton.textContent = "New Todo"
     newProjectButton.classList.add("newTodo")
     newTodoButton.addEventListener("click", () => {
+        confirmTodo.style.visibility = "hidden"
         currentProject = project
+        clearDialogs()
         todosDialog.showModal()
     })
     
@@ -51,7 +59,8 @@ function appendProject(project) {
     editProjectButton.classList.add("editProject")
     editProjectButton.addEventListener("click", () => {
         currentProject = project
-        projectName.value = project.projectTitle
+        projectNameInput.value = project.projectTitle
+        confirmProject.style.visibility = "hidden"
         projectDialog.showModal()
     })
 
@@ -71,10 +80,6 @@ function appendProject(project) {
 }
 
 function appendTodo(todo) {
-    function checkIfNil(todoEle) {
-        if (!todoEle && todoEle !== false) {return}
-        return todoEle
-    }
     if (!todo) {return}
 
     //* Todo Container
@@ -84,22 +89,23 @@ function appendTodo(todo) {
 
     //* Todo Div
     const newDiv = document.createElement("div")
-    newDiv.textContent = `${checkIfNil(todo.title)}, ${checkIfNil(todo.description)}, ${checkIfNil(todo.dueDate.dateStatus)}, ${checkIfNil(todo.priority)}, ${checkIfNil(todo.notes)}, ${checkIfNil(todo.checklist)},`
+    newDiv.textContent = `${todo.title}, ${todo.description}, ${todo.dueDate.dateStatus}, ${todo.priority}, ${todo.notes}, ${todo.checklist},`
     body.appendChild(newDiv)
 
     //* Edit Button
-    const editTodoButton = document.createElement("button")
-    editTodoButton.textContent = "Edit Todo"
-    editTodoButton.classList.add("editTodo")
-    editTodoButton.addEventListener("click", () => {
+    const viewTodoButton = document.createElement("button")
+    viewTodoButton.textContent = "Edit Todo"
+    viewTodoButton.classList.add("editTodo")
+    viewTodoButton.addEventListener("click", () => {
         currentTodo = todo
-        titleInput.value = checkIfNil(todo.title)
-        descriptionInput.value = checkIfNil(todo.description)
-        dueDateInput.value = checkIfNil(todo.dueDate.date)
-        timeInput.value = checkIfNil(todo.dueDate.time)
-        priorityInput.value = checkIfNil(todo.priority)
-        notesInput.value = checkIfNil(todo.notes)
-        checklistInput.value = checkIfNil(todo.checklist)
+        titleInput.value = todo.title
+        descriptionInput.value = todo.description
+        dueDateInput.value = todo.dueDate.date
+        timeInput.value = todo.dueDate.time
+        priorityInput.value = todo.priority
+        notesInput.value = todo.notes
+        checklistInput.value = todo.checklist
+        confirmTodo.style.visibility = "hidden"
         todosDialog.showModal()
     })
 
@@ -116,20 +122,20 @@ function appendTodo(todo) {
     const projectDiv = getProjectList()[todo.projectIndex].projectDiv
     projectDiv.appendChild(todoDiv)
     todoDiv.appendChild(newDiv)
-    todoDiv.appendChild(editTodoButton)
+    todoDiv.appendChild(viewTodoButton)
     todoDiv.appendChild(deleteTodoButton)
 }
 
 function createProject() {
     //* Edits Project
     if (currentProject) {
-        const newProject = getProjectList()[currentProject.indexInList].projectTitle = projectName.value
+        const newProject = getProjectList()[currentProject.indexInList].projectTitle = projectNameInput.value
         changeData(newProject)
         currentProject = ""
     }
     //* Creates Project
     else {
-        const newProject = new Project(projectName.value)
+        const newProject = new Project(checkIfNil(projectNameInput.value))
         saveData(newProject)
         currentTab = newProject
         loadProjectButtons()
@@ -147,12 +153,12 @@ function deleteProject() {
 
 function createTodo() {
     const newTodo = new Todo(
-        titleInput.value,
-        descriptionInput.value,
-        new dueDate(dueDateInput.value, timeInput.value),
-        priorityInput.value,
-        notesInput.value,
-        checklistInput.value
+        checkIfNil(titleInput.value),
+        checkIfNil(descriptionInput.value),
+        new dueDate(checkIfNil(dueDateInput.value), checkIfNil(timeInput.value)),
+        checkIfNil(priorityInput.value),
+        checkIfNil(notesInput.value),
+        checkIfNil(checklistInput.value)
     )
     //* = Create Todo
     if (currentProject) {
@@ -284,14 +290,23 @@ function loadProjectButtons() {
 }
 
 function clearDialogs() {
-    projectName.value = ""
-    titleInput.value = ""
-    descriptionInput.value = ""
-    dueDateInput.value = ""
-    timeInput.value = ""
-    priorityInput.value = ""
-    notesInput.value = ""
+    projectNameInput.value =
+    titleInput.value =
+    descriptionInput.value =
+    dueDateInput.value =
+    timeInput.value =
+    priorityInput.value =
+    notesInput.value =
     checklistInput.value = ""
+}
+
+function inputListeners() {
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            confirmProject.style.visibility = "visible"
+            confirmTodo.style.visibility = "visible"
+        })
+    });
 }
 
 todayButton.addEventListener("click", () => {
@@ -309,7 +324,10 @@ inboxButton.addEventListener("click", () => {
     loadTab()
 })
 
+inputListeners()
 newProjectButton.addEventListener("click", () => {
+    confirmProject.style.visibility = "hidden"
+    clearDialogs()
     projectDialog.showModal()
 })
 
@@ -320,7 +338,7 @@ confirmProject.addEventListener("click", (event) => {
     projectDialog.close()
 })
 
-confirmTodos.addEventListener("click", (event) => {
+confirmTodo.addEventListener("click", (event) => {
     event.preventDefault()
     createTodo()
     clearDialogs()

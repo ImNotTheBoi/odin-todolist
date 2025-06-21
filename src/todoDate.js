@@ -10,6 +10,7 @@ export default class dueDate {
 
     compareDays() {
         const daysLeft = (new Date(this.date).getDay()) - (new Date().getDay())
+        console
         return daysLeft
     }
 
@@ -22,6 +23,7 @@ export default class dueDate {
 
     get dateStatus() {
         console.log(this.compareDate())
+        if (!this.date) {return ""}
         if (this.compareDate() === -1 && this.time) {
             return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " ago"
         }
