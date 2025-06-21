@@ -210,7 +210,6 @@ function loadTodo(todo) {
     appendTodo(todo)
 }
 
-let currentTab = "Inbox"
 function loadTab() {
     deleteDivs()
     if (currentTab === "Inbox") {loadInbox()}
@@ -255,12 +254,18 @@ function loadUpcoming() {
 
 function loadInbox() {
     if (getProjectList() == []) {return}
+    if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
-        loadProject(project)
+        let projectAppended = false
         for (const todo of project.todoList) {
-            Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
-            Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
-            loadTodo(todo)
+            if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("ago")) {
+                if (!projectAppended) {
+                    projectAppended = true
+                    loadProject(project)
+                    loadTodo(todo)
+                }
+                else {loadTodo(todo)}
+            }
         }
     }
 }
@@ -345,6 +350,7 @@ confirmTodo.addEventListener("click", (event) => {
     todosDialog.close()
 })
 
+let currentTab = "Inbox"
 loadData()
 loadProjectButtons()
 loadTab()
