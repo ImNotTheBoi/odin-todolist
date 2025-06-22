@@ -6,10 +6,18 @@
     <title>Document</title>
 </head>
 <body>
-    <button class="inbox">Inbox</button>
-    <button class="today">Today</button>
-    <button class="upcoming">Upcoming</button>
-    <button class="newProject">New Project</button>
+    <div class="sidebar">
+        <header>Todomo</header>
+        <div class="defaultTabs">
+                <button class="inbox"><img src="svg/inbox.svg">Inbox</button>
+                <button class="today"><img src="svg/book-open.svg">Today</button>
+                <button class="upcoming"><img src="svg/calendar.svg">Upcoming</button>
+        </div>
+        <div class="projects">My Projects<button class="newProject"><img src="svg/plus-circle.svg"></button></div>
+        <img class="catImg" src="svg/github.svg">
+        <div class="projectTabs">
+        </div>
+    </div>
     <dialog class="projectDialog">
         <form action="">
             <div>

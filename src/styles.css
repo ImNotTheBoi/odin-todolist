@@ -39,6 +39,95 @@
   #root, #__next {
     isolation: isolate;
   }
+  
+  
+@font-face {
+  font-family: "opensans";
+  src:
+    url("fonts/opensans-regular-webfont.woff") format("woff"),
+    url("fonts/opensans-regular-webfont.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "roboto";
+  src:
+    url("fonts/roboto-regular-webfont.woff") format("woff"),
+    url("fonts/roboto-regular-webfont.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  font-size: 2vh;
+  font-family: "opensans";
+}
+
+.sidebar {
+  background-color: #dbeafe;
+  width: 18em;
+  height: 100vh;
+  padding: 2em 0;
+}
+
+header {
+  font-family: "roboto";
+  font-weight: bold;
+  font-size: xx-large;
+  color: #162556;
+  padding: 0 0.6em;
+}
+
+.defaultTabs,
+.projectTabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.defaultTabs button,
+.projectTabs button {
+  display: flex;
+  background-color: #dbeafe;
+  border: none;
+  font-size: medium;
+  gap: 0.2em;
+  padding: 0.4em 1.4em;
+}
+
+.defaultTabs button:hover,
+.projectTabs button:hover {
+  background-color: #eff6ff;
+}
+
+.projectTabs button {
+  padding-left: 1.5em;
+}
+
+.projects {
+  display: flex;
+  padding: 0 1.3em;
+  margin-top: 1.5em;
+  font-size: 1.3rem;
+  font-weight: light;
+  font-family: "roboto";
+  align-items: center;
+  gap: 0.2em;
+}
+
+.projects button {
+  background-color: #dbeafe;
+  border: none;
+}
+
+.catImg {
+  display: none;
+}
+
+.projects img {
+  display: block;
+  margin-top: 0.2em;
+}
 
 #confirmProject,
 #confirmTodos {

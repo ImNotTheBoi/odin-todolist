@@ -7,6 +7,8 @@ import { saveData, deleteData, changeData, loadData, getProjectList } from "./st
 const todayButton = document.querySelector(".today")
 const upcomingButton = document.querySelector(".upcoming")
 const inboxButton = document.querySelector(".inbox")
+const projectTabs = document.querySelector(".projectTabs")
+const catImg = document.querySelector(".catImg")
 
 const projectDialog = document.querySelector(".projectDialog")
 const newProjectButton = document.querySelector(".newProject")
@@ -138,8 +140,8 @@ function createProject() {
         const newProject = new Project(checkIfNil(projectNameInput.value))
         saveData(newProject)
         currentTab = newProject
-        loadProjectButtons()
     }
+    loadProjectButtons()
     loadTab()
 }
 
@@ -283,14 +285,18 @@ function loadProjectButtons() {
     if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
         loadProject(project)
+        const projectText = document.createTextNode(project.projectTitle)
+        const imgClone = catImg.cloneNode()
+        imgClone.style.display = "block"
         const projectButton = document.createElement("button")
         projectButton.classList.add("projectButton")
-        projectButton.textContent = project.projectTitle
+        projectButton.appendChild(imgClone)
+        projectButton.appendChild(projectText)
         projectButton.addEventListener("click", (event) => {
             currentTab = project
             loadTab()
         })
-        body.appendChild(projectButton)
+        projectTabs.appendChild(projectButton)
     }
 }
 
@@ -339,6 +345,7 @@ newProjectButton.addEventListener("click", () => {
 confirmProject.addEventListener("click", (event) => {
     event.preventDefault()
     createProject()
+
     clearDialogs()
     projectDialog.close()
 })
