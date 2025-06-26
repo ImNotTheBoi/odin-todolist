@@ -188,10 +188,10 @@ function deleteTodo() {
 }
 
 function deleteDivs() {
-    const projectDivs = document.querySelectorAll(".project")
-    projectDivs.forEach(project => {
-        project.remove()
-    });
+    // const projectDivs = document.querySelectorAll(".project")
+    // projectDivs.forEach(project => {
+    //     project.remove()
+    // });
 }
 
 function deleteProjectButtons() {

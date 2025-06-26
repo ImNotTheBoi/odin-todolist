@@ -64,6 +64,10 @@
   font-family: "opensans";
 }
 
+body {
+  display: flex;
+}
+
 .sidebar {
   background-color: #dbeafe;
   width: 18em;
@@ -127,6 +131,86 @@ header {
 .projects img {
   display: block;
   margin-top: 0.2em;
+}
+
+.content {
+  width: 100%;
+  height: 100vh;
+  padding: 5.4em 6em;
+}
+
+.project div {
+  display: flex;
+}
+
+.projectTitle {
+  font-family: "roboto";
+  font-size: x-large;
+  color: #162556;
+}
+
+.project button {
+  border: none;
+  background-color: #ffffff;
+}
+
+.projectMain, .todo {
+  border-bottom: #16255650 0.1em solid;
+}
+
+.deleteProject {
+  margin-left: auto;
+}
+.projectMain img {
+  width: 1.5em;
+}
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 0.1em;
+  padding: 0.2em 0;
+}
+
+.checklist {
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0.3em 0em;
+  margin-bottom: auto;
+  margin-top: 0.4em;
+}
+
+.todoInfo {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.1em;
+}
+
+.description {
+  color: #00000050;
+  font-size: small;
+  font-family: "opensans";
+  margin-top: -0.2em;
+}
+
+.dueDate {
+  font-size: 0.9rem;
+  color: #2b7fff;
+}
+
+.todoButtons {
+  margin-left: auto;
+  margin-bottom: auto;
+  margin-top: 0.4em;
+  margin-right: 0.15em;
+}
+.todoButtons img {
+  width: 1.2em;
 }
 
 #confirmProject,
