@@ -143,6 +143,10 @@ header {
   display: flex;
 }
 
+.project {
+  display: none;
+}
+
 .projectTitle {
   font-family: "roboto";
   font-size: x-large;
@@ -171,7 +175,7 @@ header {
 }
 
 .todo {
-  display: flex;
+  display: none;
   gap: 0.5em;
   margin-bottom: 0.1em;
   padding: 0.2em 0;

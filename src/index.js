@@ -26,7 +26,9 @@ const notesInput = document.querySelector("#notes")
 const checklistInput = document.querySelector("#checklist")
 const inputs = [projectNameInput, titleInput, descriptionInput, dueDateInput, timeInput, priorityInput, notesInput, checklistInput]
 
-const body = document.querySelector("body")
+const projectDiv = document.querySelector(".project")
+const todoDiv = document.querySelector(".todo")
+const content = document.querySelector(".content")
 
 let currentProject = ""
 let currentTodo = ""
@@ -39,15 +41,14 @@ function checkIfNil(x) {
 function appendProject(project) {
     //* Project Div
     console.log(project)
-    const projectDiv = document.createElement("div")
-    projectDiv.textContent = project.projectTitle
-    projectDiv.classList.add("project")
-    project.projectDiv = projectDiv
+    const projectClone = projectDiv.cloneNode(true)
+    const projectTitle = projectClone.querySelector(".projectTitle")
+    projectClone.style.display = "block"
+    projectTitle.textContent = project.projectTitle
+    project.projectDiv = projectClone
 
     //* Todo Button
-    const newTodoButton = document.createElement("button")
-    newTodoButton.textContent = "New Todo"
-    newProjectButton.classList.add("newTodo")
+    const newTodoButton = projectClone.querySelector(".newTodo")
     newTodoButton.addEventListener("click", () => {
         confirmTodo.style.visibility = "hidden"
         currentProject = project
@@ -56,9 +57,7 @@ function appendProject(project) {
     })
     
     //* Edit Button
-    const editProjectButton = document.createElement("button")
-    editProjectButton.textContent = "Edit Project"
-    editProjectButton.classList.add("editProject")
+    const editProjectButton = projectClone.querySelector(".editProject")
     editProjectButton.addEventListener("click", () => {
         currentProject = project
         projectNameInput.value = project.projectTitle
@@ -67,37 +66,34 @@ function appendProject(project) {
     })
 
     //* Delete Button
-    const deleteProjectButton = document.createElement("button")
-    deleteProjectButton.textContent = "Delete Project"
+    const deleteProjectButton = projectClone.querySelector(".deleteProject")
     deleteProjectButton.classList.add("deleteProject")
     deleteProjectButton.addEventListener("click", () => {
         currentProject = project
         deleteProject()
     })
 
-    body.appendChild(projectDiv)
-    projectDiv.appendChild(editProjectButton)
-    projectDiv.appendChild(deleteProjectButton)
-    projectDiv.appendChild(newTodoButton)
+    content.appendChild(projectClone)
 }
 
 function appendTodo(todo) {
     if (!todo) {return}
 
     //* Todo Container
-    const todoDiv = document.createElement("div")
-    todoDiv.classList.add("todo")
+    const todoClone = todoDiv.cloneNode(true)
+    todoClone.style.display = "flex"
     todo.todoDiv = todoDiv
 
     //* Todo Div
-    const newDiv = document.createElement("div")
-    newDiv.textContent = `${todo.title}, ${todo.description}, ${todo.dueDate.dateStatus}, ${todo.priority}, ${todo.notes}, ${todo.checklist},`
-    body.appendChild(newDiv)
+    const title = todoClone.querySelector(".title")
+    const description = todoClone.querySelector(".description")
+    const dueDate = todoClone.querySelector(".dueDate")
+    title.textContent = todo.title
+    description.textContent = todo.description
+    dueDate.textContent = todo.dueDate.dateStatus
 
     //* Edit Button
-    const viewTodoButton = document.createElement("button")
-    viewTodoButton.textContent = "Edit Todo"
-    viewTodoButton.classList.add("editTodo")
+    const viewTodoButton = todoClone.querySelector(".editTodo")
     viewTodoButton.addEventListener("click", () => {
         currentTodo = todo
         titleInput.value = todo.title
@@ -112,9 +108,7 @@ function appendTodo(todo) {
     })
 
     //* Delete Button
-    const deleteTodoButton = document.createElement("button")
-    deleteTodoButton.textContent = "Delete Todo"
-    deleteTodoButton.classList.add("deleteTodo")
+    const deleteTodoButton = todoClone.querySelector(".deleteTodo")
     deleteTodoButton.addEventListener("click", () => {
         currentTodo = todo
         deleteTodo()
@@ -122,10 +116,8 @@ function appendTodo(todo) {
 
     console.log(todo)
     const projectDiv = getProjectList()[todo.projectIndex].projectDiv
-    projectDiv.appendChild(todoDiv)
-    todoDiv.appendChild(newDiv)
-    todoDiv.appendChild(viewTodoButton)
-    todoDiv.appendChild(deleteTodoButton)
+    const todoList = projectDiv.querySelector(".todoList")
+    todoList.appendChild(todoClone)
 }
 
 function createProject() {
@@ -188,10 +180,10 @@ function deleteTodo() {
 }
 
 function deleteDivs() {
-    // const projectDivs = document.querySelectorAll(".project")
-    // projectDivs.forEach(project => {
-    //     project.remove()
-    // });
+    const projectDivs = document.querySelectorAll(".project")
+    projectDivs.forEach(project => {
+        project.remove()
+    });
 }
 
 function deleteProjectButtons() {
@@ -225,6 +217,7 @@ function loadToday() {
     for (const project of getProjectList()) {
         let projectAppended = false
         for (const todo of project.todoList) {
+            Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
             if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("Today")) {
                 if (!projectAppended) {
                     projectAppended = true
@@ -242,6 +235,7 @@ function loadUpcoming() {
     for (const project of getProjectList()) {
         let projectAppended = false
         for (const todo of project.todoList) {
+            Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
             if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("left")) {
                 if (!projectAppended) {
                     projectAppended = true
@@ -260,6 +254,7 @@ function loadInbox() {
     for (const project of getProjectList()) {
         let projectAppended = false
         for (const todo of project.todoList) {
+            Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
             if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("ago")) {
                 if (!projectAppended) {
                     projectAppended = true

@@ -20,10 +20,11 @@ export default class dueDate {
         return new Date(dateArray[0], (dateArray[1] - 1), dateArray[2], timeArray[0], timeArray[1])
     }
 
-    get dateStatus() {
+    get dateStatus() {  
+        console.log(this.dateAndTime)
         console.log(this.compareDate())
         if (!this.date) {return ""}
-        if (this.compareDate() === -1) {
+        if (this.compareDate() === -1 && this.time) {
             return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " ago"
         }
         if (this.compareDays() === 0) {
@@ -31,7 +32,11 @@ export default class dueDate {
             else {return "Today"}
         }
         if (this.compareDate() === 1) {
+            if (this.time) {return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " left, " + this.time}
             return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " left"
+        }
+        else {
+            return formatDistance(this.dateAndTime, new Date(), {includeSeconds: true}) + " ago"
         }
     }
 }
