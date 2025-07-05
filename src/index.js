@@ -24,7 +24,7 @@ const timeInput = document.querySelector("#time")
 const priorityInput = document.querySelector("#priority")
 const notesInput = document.querySelector("#notes")
 const checklistInput = document.querySelector("#checklist")
-const inputs = [projectNameInput, titleInput, descriptionInput, dueDateInput, timeInput, priorityInput, notesInput, checklistInput]
+const inputs = [projectNameInput, titleInput, descriptionInput, dueDateInput, timeInput, priorityInput, notesInput]
 
 const projectDiv = document.querySelector(".project")
 const todoDiv = document.querySelector(".todo")
@@ -102,7 +102,6 @@ function appendTodo(todo) {
         timeInput.value = todo.dueDate.time
         priorityInput.value = todo.priority
         notesInput.value = todo.notes
-        checklistInput.value = todo.checklist
         confirmTodo.style.visibility = "hidden"
         todosDialog.showModal()
     })
@@ -119,6 +118,17 @@ function appendTodo(todo) {
         console.log(todo.priorityColor)
         todoClone.style.backgroundColor = todo.priorityColor + 50
     }
+
+    //* Checklist
+    const checklist = todoClone.querySelector(".checklist")
+    if (todo.checklist) {checklist.checked = todo.checklist}
+    checklist.addEventListener('change', () => {
+        console.log("yes")
+        todo.checklist = checklist.checked
+        getProjectList()[todo.projectIndex].sortPriority()
+        changeData(getProjectList()[todo.projectIndex])
+        loadTab()
+    })
 
     console.log(todo)
     const projectDiv = getProjectList()[todo.projectIndex].projectDiv
@@ -158,7 +168,6 @@ function createTodo() {
         new dueDate(checkIfNil(dueDateInput.value), checkIfNil(timeInput.value)),
         checkIfNil(priorityInput.value),
         checkIfNil(notesInput.value),
-        checkIfNil(checklistInput.value)
     )
     //* = Create Todo
     if (currentProject) {
@@ -308,8 +317,7 @@ function clearDialogs() {
     dueDateInput.value =
     timeInput.value =
     priorityInput.value =
-    notesInput.value =
-    checklistInput.value = ""
+    notesInput.value
 }
 
 function inputListeners() {

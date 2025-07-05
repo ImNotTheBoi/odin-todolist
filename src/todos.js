@@ -1,6 +1,6 @@
 export default class Todo {
-    constructor(title, description, dueDate, priority, notes, checklist) {
-        [this.title, this.description, this.dueDate, this.priority, this.notes, this.checklist] = [title, description, dueDate, priority, notes, checklist]
+    constructor(title, description, dueDate, priority, notes) {
+        [this.title, this.description, this.dueDate, this.priority, this.notes] = [title, description, dueDate, priority, notes]
     }
 
     editInfo(info, value) {

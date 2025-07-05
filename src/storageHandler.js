@@ -30,7 +30,7 @@ function saveData(project) {
     localStorage.setItem('projectList', JSON.stringify(projectList))
 }
 
-//* For creating/deleting/editing todos & editing projects
+//* For todos & editing projects
 function changeData(project) {
     const projectIndex = project.indexInList
     projectList[projectIndex] = project

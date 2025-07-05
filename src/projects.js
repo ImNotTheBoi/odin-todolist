@@ -23,7 +23,12 @@ export default class Project {
     }
 
     sortPriority() {
-        this.todoList = this.todoList.sort(function(a, b){return b.priority - a.priority})
+        console.log("sorting")
+        this.todoList = this.todoList.sort(function(a, b){
+            if (a.checklist && !b.checklist) {console.log("a"); return 1}
+            if (b.checklist && !a.checklist) {console.log("sorting"); return -1}
+            return b.priority - a.priority
+        })
         this.giveIndex()
         this.setPriorityColor()
     }
