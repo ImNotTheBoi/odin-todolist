@@ -9,12 +9,13 @@ const upcomingButton = document.querySelector(".upcoming")
 const inboxButton = document.querySelector(".inbox")
 const projectTabs = document.querySelector(".projectTabs")
 const catImg = document.querySelector(".catImg")
+const tabTitle = document.querySelector(".tabTitle")
 
 const projectDialog = document.querySelector(".projectDialog")
 const newProjectButton = document.querySelector(".newProject")
 const projectNameInput = document.querySelector("#projectName")
 const confirmProject = document.querySelector("#confirmProject")
-const todosDialog = document.querySelector(".todosDialog")
+const todoDialog = document.querySelector(".todoDialog")
 const confirmTodo = document.querySelector("#confirmTodo")
 
 const titleInput = document.querySelector("#title")
@@ -59,10 +60,10 @@ function appendProject(project) {
     //* Todo Button
     const newTodoButton = projectClone.querySelector(".newTodo")
     newTodoButton.addEventListener("click", () => {
-        confirmTodo.style.visibility = "hidden"
+        confirmTodo.style.display = "none"
         currentProject = project
         clearDialogs()
-        todosDialog.showModal()
+        todoDialog.showModal()
     })
     
     //* Edit Button
@@ -70,7 +71,7 @@ function appendProject(project) {
     editProjectButton.addEventListener("click", () => {
         currentProject = project
         projectNameInput.value = project.projectTitle
-        confirmProject.style.visibility = "hidden"
+        confirmProject.style.display = "none"
         projectDialog.showModal()
     })
 
@@ -85,6 +86,7 @@ function appendProject(project) {
     //* Default Project
     if (project.default) {
         deleteProjectButton.remove()
+        editProjectButton.remove()
     }
     content.appendChild(projectClone)
 }
@@ -115,8 +117,8 @@ function appendTodo(todo) {
         timeInput.value = todo.dueDate.time
         priorityInput.value = todo.priority
         notesInput.value = todo.notes
-        confirmTodo.style.visibility = "hidden"
-        todosDialog.showModal()
+        confirmTodo.style.display = "none"
+        todoDialog.showModal()
     })
 
     //* Delete Button
@@ -241,6 +243,7 @@ function loadTab() {
 }
 
 function loadToday() {
+    tabTitle.textContent = "Today"
     if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
         let projectAppended = false
@@ -260,6 +263,7 @@ function loadToday() {
 }
 
 function loadUpcoming() {
+    tabTitle.textContent = "Upcoming"
     if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
         let projectAppended = false
@@ -279,6 +283,7 @@ function loadUpcoming() {
 }
 
 function loadInbox() {
+    tabTitle.textContent = "Inbox"
     if (getProjectList() == []) {return}
     if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
@@ -286,7 +291,7 @@ function loadInbox() {
         if (project.default) {loadProject(project); projectAppended = true}
         for (const todo of project.todoList) {
             Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
-            if (todo.dueDate.dateStatus && (todo.dueDate.dateStatus.includes("ago" || "Today") || todo.dueDate.dateStatus.includes("Today")) ) {
+            if (!todo.dueDate.dateStatus.includes("ago")) {
                 if (!projectAppended) {
                     projectAppended = true
                     loadProject(project)
@@ -299,6 +304,7 @@ function loadInbox() {
 }
 
 function loadProjectTab(project) {
+    tabTitle.textContent = project.projectTitle
     loadProject(project)
     for (const todo of project.todoList) {
         Object.setPrototypeOf(todo, Object.getPrototypeOf(new Todo()))
@@ -333,14 +339,14 @@ function clearDialogs() {
     dueDateInput.value =
     timeInput.value =
     priorityInput.value =
-    notesInput.value
+    notesInput.value = ""
 }
 
 function inputListeners() {
     inputs.forEach(input => {
         input.addEventListener('input', () => {
-            confirmProject.style.visibility = "visible"
-            confirmTodo.style.visibility = "visible"
+            confirmProject.style.display = "block"
+            confirmTodo.style.display = "block"
         })
     });
 }
@@ -362,7 +368,7 @@ inboxButton.addEventListener("click", () => {
 
 inputListeners()
 newProjectButton.addEventListener("click", () => {
-    confirmProject.style.visibility = "hidden"
+    confirmProject.style.display = "block"
     clearDialogs()
     projectDialog.showModal()
 })
@@ -379,7 +385,7 @@ confirmTodo.addEventListener("click", (event) => {
     event.preventDefault()
     createTodo()
     clearDialogs()
-    todosDialog.close()
+    todoDialog.close()
 })
 
 let currentTab = "Inbox"

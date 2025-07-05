@@ -19,6 +19,7 @@
         </div>
     </div>
     <div class="content">
+        <div class="tabTitle"></div>
         <div class="project">
             <div class="projectMain">
                 <div class="projectTitle">Groceries</div>
@@ -45,63 +46,39 @@
     <dialog class="projectDialog">
         <form action="">
             <div>
-                <label for="projectName" aria-required="true">
-                    Project Name:
-                    <input type="text" id="projectName">
-                </label>
-                <div>
-                    <button value="cancel" formmethod="dialog">Close</button>
-                    <button id="confirmProject">Confirm</button>
+                <label for="projectName" aria-required="true">Project Name<span><img src="svg/github.svg"></span></label>
+                <div class="dialogButtons">
+                    <button value="cancel" formmethod="dialog"><img src="svg/arrow-left-circle.svg"></button>
+                    <button id="confirmProject"><img src="svg/check-circle.svg"></button>
                 </div>
             </div>
+            <input type="text" id="projectName" maxlength="15" placeholder="Title...">
         </form>
     </dialog>
-    <dialog class="todosDialog">
+    <dialog class="todoDialog">
         <form action="">
             <div>
-                <label for="title" aria-required="true">
-                    Title:
-                    <input type="text" id="title">
-                </label>
+                <input type="text" id="title" placeholder="Title..." maxlength="30">
             </div>
             <div>
-                <label for="description">
-                    Description:
-                    <input type="text" id="description">
-                </label>
+                <input type="text" id="description" placeholder="Description..." maxlength="30">
             </div>
-            <div>
-                <label for="dueDate">
-                    Due Date:
-                    <input type="date" id="dueDate">
-                </label>
-            </div>
-            <div>
-                <label for="time">
-                    Due Date:
-                    <input type="time" id="time">
-                </label>
-            </div>
-            <div>
-                <label for="priority">
-                    Priority
+            <div class="todoProperties">
+                <label for="dueDate">Date</label>
+                <input type="date" id="dueDate">
+                <input type="time" id="time">
+                <label for="priority">Priority</label>
                     <select name="priority" id="priority">
                         <option value="">None</option>
                         <option value="3">Urgent</option>
                         <option value="2">Important</option>
                         <option value="1">Low Priority</option>
                     </select>
-                </label>
             </div>
-            <div>
-                <label for="notes">
-                    Notes:
-                    <input type="text" id="notes">
-                </label>
-            </div>
-            <div>
-                <button value="cancel" formmethod="dialog">Close</button>
-                <button id="confirmTodo">Confirm</button>
+            <textarea name="notes" id="notes" rows="6" placeholder="Notes..."></textarea>
+            <div class="dialogButtons">
+                <button value="cancel" formmethod="dialog"><img src="svg/arrow-left-circle.svg"></button>
+                <button id="confirmTodo"><img src="svg/check-circle.svg"></button>
             </div>
         </form>
     </dialog>

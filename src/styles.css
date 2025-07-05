@@ -83,6 +83,14 @@ header {
   padding: 0 0.6em;
 }
 
+.tabTitle {
+  font-family: "roboto";
+  font-weight: bold;
+  font-size: xx-large;
+  margin-top: -0.6em; 
+  margin-bottom: -0.5em; 
+}
+
 .defaultTabs,
 .projectTabs {
   display: flex;
@@ -222,5 +230,80 @@ header {
 
 #confirmProject,
 #confirmTodos {
-    visibility: hidden;
+    display: none;
+}
+
+dialog {
+  position: fixed;
+  top:  50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border: #2b7fff70 solid 0.1em;
+  border-radius: 0.5em;
+  width: min(50%, 500px);
+  padding: 1.3em 1.5em;
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.dialogButtons {
+  margin-top: 0.1em;
+  margin-left: auto;
+  display: flex;
+  gap: 0.4em;
+}
+
+dialog button {
+  background-color: #ffffff00;
+  border: none;
+}
+
+.projectDialog label {
+  font-size: x-large;
+  display: flex;
+  gap: 0.2em;
+  align-items: center;
+}
+
+.projectDialog input {
+  width: 100%;
+  margin-top: -0.2em;
+  margin-bottom: 0.2em;
+  font-size: medium;
+  padding: 0 0.2em;
+}
+
+.projectDialog div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.todoDialog input {
+  width: 100%;
+  padding: 0em 0.5em;
+}
+
+#title {
+  font-size: x-large;
+}
+
+#description {
+  font-size: medium;
+}
+
+#notes {
+  resize: none;
+  padding: 0.1em 0.5em;
+}
+
+.todoProperties {
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+  align-items: center;
 }
