@@ -7,11 +7,11 @@ export default class Project {
         [this.projectTitle] = [projectTitle]
     }
     
-    priorityColors = ["#ff7f7e", "#ffbf7f", "#ffdf80"]
+    priorityColors = ["#ffdf80", "#ffbf7f", "#ff7f7e"]
     setPriorityColor() {
         this.todoList.map(elem => {
             if (elem.priority) {
-                elem.priorityColor = this.priorityColors[(elem.priority - 1)]
+                elem.priorityColor = this.priorityColors[elem.priority - 1]
             }
         })
     }

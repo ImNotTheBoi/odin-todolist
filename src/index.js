@@ -114,6 +114,12 @@ function appendTodo(todo) {
         deleteTodo()
     })
 
+    //* Priority Color
+    if (todo.priorityColor) {
+        console.log(todo.priorityColor)
+        todoClone.style.backgroundColor = todo.priorityColor + 50
+    }
+
     console.log(todo)
     const projectDiv = getProjectList()[todo.projectIndex].projectDiv
     const todoList = projectDiv.querySelector(".todoList")

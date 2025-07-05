@@ -155,7 +155,7 @@ header {
 
 .project button {
   border: none;
-  background-color: #ffffff;
+  background-color: #ffffff00;
 }
 
 .projectMain, .todo {
@@ -213,6 +213,8 @@ header {
   margin-top: 0.4em;
   margin-right: 0.15em;
 }
+
+
 .todoButtons img {
   width: 1.2em;
 }
