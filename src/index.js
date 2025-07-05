@@ -23,7 +23,6 @@ const dueDateInput = document.querySelector("#dueDate")
 const timeInput = document.querySelector("#time")
 const priorityInput = document.querySelector("#priority")
 const notesInput = document.querySelector("#notes")
-const checklistInput = document.querySelector("#checklist")
 const inputs = [projectNameInput, titleInput, descriptionInput, dueDateInput, timeInput, priorityInput, notesInput]
 
 const projectDiv = document.querySelector(".project")
@@ -36,6 +35,16 @@ let currentTodo = ""
 function checkIfNil(x) {
     if (!x && x !== false) {return ""}
     return x
+}
+
+function defaultProject() {
+    const defaultProject = new Project("Default")
+    const defaultTodo = new Todo("Welcome to Todomo", "Press + to start adding todos", new dueDate(new Date()), "", "")
+    const defaultTodo2 = new Todo("In My Projects, Press +", "Useful to organize todos!", new dueDate(new Date()), "", "")
+    defaultProject.default = true
+    defaultProject.addTodo(defaultTodo2)
+    defaultProject.addTodo(defaultTodo)
+    saveData(defaultProject)
 }
 
 function appendProject(project) {
@@ -73,6 +82,10 @@ function appendProject(project) {
         deleteProject()
     })
 
+    //* Default Project
+    if (project.default) {
+        deleteProjectButton.remove()
+    }
     content.appendChild(projectClone)
 }
 
@@ -231,6 +244,7 @@ function loadToday() {
     if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
         let projectAppended = false
+        if (project.default) {loadProject(project); projectAppended = true}
         for (const todo of project.todoList) {
             Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
             if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("Today")) {
@@ -249,6 +263,7 @@ function loadUpcoming() {
     if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
         let projectAppended = false
+        if (project.default) {loadProject(project); projectAppended = true}
         for (const todo of project.todoList) {
             Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
             if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("left")) {
@@ -268,9 +283,10 @@ function loadInbox() {
     if (getProjectList() == []) {return}
     for (const project of getProjectList()) {
         let projectAppended = false
+        if (project.default) {loadProject(project); projectAppended = true}
         for (const todo of project.todoList) {
             Object.setPrototypeOf(todo.dueDate, Object.getPrototypeOf(new dueDate()))
-            if (todo.dueDate.dateStatus && todo.dueDate.dateStatus.includes("ago")) {
+            if (todo.dueDate.dateStatus && (todo.dueDate.dateStatus.includes("ago" || "Today") || todo.dueDate.dateStatus.includes("Today")) ) {
                 if (!projectAppended) {
                     projectAppended = true
                     loadProject(project)
@@ -367,6 +383,8 @@ confirmTodo.addEventListener("click", (event) => {
 })
 
 let currentTab = "Inbox"
+console.log(getProjectList())
+if (getProjectList().length === 0) {console.log("yes"); defaultProject()}
 loadData()
 loadProjectButtons()
 loadTab()

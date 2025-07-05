@@ -145,6 +145,7 @@ header {
 
 .project {
   display: none;
+  margin-top: 1em;
 }
 
 .projectTitle {
